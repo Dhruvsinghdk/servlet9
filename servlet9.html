@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+    <form action="">
+        Enter name : <input type="text" name="fname">
+        <input type="submit" name="register">
+    </form>
+
+    <a href='product'>Go to</a>
+</body>
+</html>
+
+
+<!-- home.java -->
+package abc;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+@WebServlet("/home")
+public class home extends HttpServlet {
+
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		res.setContentType("text/html");
+		
+		PrintWriter p = res.getWriter();
+		
+		String name = req.getParameter("fname");
+	
+		p.println(name);
+		
+		Cookie c = new Cookie("saved", name);
+		res.addCookie(c);
+		
+		p.println("<a href='product'>Go to</a>");
+		
+	}
+
+}
+///////////////////////////////////////////
+<!-- product.java -->
+package abc;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+@WebServlet("/product")
+
+public class product extends HttpServlet {
+
+	@Override
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+		res.setContentType("text/html");
+		
+		PrintWriter p = res.getWriter();
+		
+		Cookie c[] = req.getCookies();
+		
+		
+		String s = "";
+		
+		if(c == null) {
+			p.println("you are new user");
+			return;
+		}
+		else {
+			for(Cookie c1 : c) {
+				s = c1.getValue();
+				}
+			}
+		
+		p.println(s);
+		
+		
+		}
+		
+
+}
